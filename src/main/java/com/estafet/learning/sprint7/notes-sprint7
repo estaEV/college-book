@@ -1,0 +1,18 @@
+Connection Methods:
+    - DriverManager with Services
+    - Class.forName() with DriverManager
+    - DataSource
+        * JNDI
+        * Java / Jakarta EE
+        * CDI
+
+JDBC Follows the Facade Pattern
+
+
+
+
+
+
+
+qustions:
+should i make the random generation in the same class?
