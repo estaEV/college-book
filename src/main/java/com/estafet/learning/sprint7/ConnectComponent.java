@@ -1,9 +1,10 @@
 package com.estafet.learning.sprint7;
 
-import com.sun.javaws.IconUtil;
-import org.apache.logging.log4j.core.util.JsonUtils;
+import org.springframework.util.StopWatch;
 
 import java.sql.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ public class ConnectComponent {
 
         for (int i = 0; i < tablesToCreate.length; i++) {
 
-            // starts from 1
             StringBuilder params = new StringBuilder("");
             for (int j = 1; j < tablesToCreate[i].length; j++) {
                 if (j != tablesToCreate[i].length - 1) {
@@ -49,7 +49,7 @@ public class ConnectComponent {
                     .replace("$tableName", tablesToCreate[i][0]);
 
             try (PreparedStatement preparedStatement = openConnection().
-                            prepareStatement(strQuery);) {
+                    prepareStatement(strQuery);) {
 
                 System.out.println(preparedStatement);
                 preparedStatement.executeUpdate();
@@ -65,7 +65,7 @@ public class ConnectComponent {
             String query = strQuery.replace("$tableName", tablesToDelete[i][0]);
 
             try (PreparedStatement preparedStatement = openConnection().
-                            prepareStatement(query);) {
+                    prepareStatement(query);) {
                 preparedStatement.executeUpdate();
             }
         }
@@ -88,7 +88,7 @@ public class ConnectComponent {
                     .replace("$tableName", tablesToDelete[0]);
 
             try (PreparedStatement preparedStatement = openConnection().
-                            prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                    prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setString(1, listStud.get(i).getName());
                 preparedStatement.setInt(2, listStud.get(i).getStudentId());
@@ -115,7 +115,7 @@ public class ConnectComponent {
                     .replace("$tableName", tablesToDelete[1]);
 
             try (PreparedStatement preparedStatement = openConnection().
-                            prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                    prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setString(1, listSub.get(i).getSubjectName());
                 preparedStatement.setString(2, String.valueOf(listSub.get(i).getSubjectId()));
@@ -126,6 +126,10 @@ public class ConnectComponent {
     }
 
     public void insertGradebookData(String[] tablesToDelete, RandomGenerator randData) throws SQLException {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        Instant starts = Instant.now();
 
         List<GradeBook> listGra = new ArrayList<>();
         listGra = randData.getGraList();
@@ -146,7 +150,7 @@ public class ConnectComponent {
                         .replace("$tableName", tablesToDelete[2]);
 
                 try (PreparedStatement preparedStatement = openConnection().
-                                prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                        prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                     preparedStatement.setInt(1, listGra.get(i).getStudentId());
                     preparedStatement.setInt(2, Integer.parseInt(mapOfGrades2.getKey()));
@@ -155,6 +159,10 @@ public class ConnectComponent {
                 }
             }
         }
+        stopWatch.stop();
+        System.out.println(stopWatch.getTotalTimeMillis());
+        Instant ends = Instant.now();
+        System.out.println(Duration.between(starts, ends));
     }
 
 
@@ -169,7 +177,7 @@ public class ConnectComponent {
                 .replace("$tableName", tablesToDelete[1]);
 
         try (PreparedStatement preparedStatement = openConnection().
-                        prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, newSubject);
             preparedStatement.setString(2, newSubjectId);
@@ -190,7 +198,7 @@ public class ConnectComponent {
                     .replace("$tableName", tablesToDelete[i]);
 
             try (PreparedStatement preparedStatement = openConnection().
-                            prepareStatement(query)) {
+                    prepareStatement(query)) {
                 preparedStatement.executeUpdate();
             }
         }
@@ -206,9 +214,9 @@ public class ConnectComponent {
                 prepareStatement(query);) {
             preparedStatement.setInt(1, studentsClassYear);
 
-            try(ResultSet resultSet = preparedStatement.executeQuery();) {
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 while (resultSet.next()) {
-                    System.out.println("resulseti is: " + resultSet );
+                    System.out.println("resulseti is: " + resultSet);
                     System.out.println("resulseti is: " + preparedStatement);
                     avgGrade = resultSet.getDouble("AVG(grade)");
                 }

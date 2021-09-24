@@ -47,7 +47,6 @@ public class RandomGenerator {
         Supplier<Integer> grade = () -> ThreadLocalRandom.current().nextInt(2, 6);
 
         stdList= new ArrayList<>();
-        System.out.println("List of student: ");
         for (int i = 0; i < length; i++) {
              Student fok = new Student();
             stdList.add(fok);
@@ -80,11 +79,7 @@ public class RandomGenerator {
                 graList.get(i).setNumOfSubjectsStudied(numOfSubjectsStudied);
                 grades.put(String.valueOf(subList.get(dice.get()).getSubjectId()), grade.get());
             }
-
             graList.get(i).setGrades(grades);
         }
-         System.out.println("krai na rand()");
-
-
     }
 }
