@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class GradeBook {
     private int StudentId;
+    private int SubjectId;
+    private int grade;
     private int numOfSubjectsStudied;
     private Map<String, Integer> grades = new LinkedHashMap<>();
 
@@ -30,5 +32,21 @@ public class GradeBook {
 
     public void setGrades(Map<String, Integer> grades) {
         this.grades = grades;
+    }
+
+    public int getSubjectId() {
+        return SubjectId;
+    }
+
+    public void setSubjectId(int subjectId) {
+        SubjectId = subjectId;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 }

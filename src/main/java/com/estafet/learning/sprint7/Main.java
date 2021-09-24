@@ -3,8 +3,6 @@ package com.estafet.learning.sprint7;
 import java.io.IOException;
 import java.util.*;
 
-import static com.estafet.learning.sprint7.Globals.STUDENTNAMES;
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -29,9 +27,14 @@ public class Main {
         Map<String, ArrayList<String>> tablesToWorkWith2 = new LinkedHashMap<>();
         String[][] tablesToWorkWith3 = {
                 {"students", "name VARCHAR(50)", "studentId VARCHAR(50)", "classYear INT"},
-                {"subjects", "name VARCHAR(50)", "year INT"},
+                {"subjects", "name VARCHAR(50)", "subjectId VARCHAR(50)", "year INT"},
                 {"gradebooks", "studentId VARCHAR(50)", "subjectId VARCHAR(50)", "grade INT"}
         };
+
+        RandomGenerator randData = new RandomGenerator();
+        randData.generateMeSome();
+
+        ConnectComponent comp = new ConnectComponent();
 
         while (isRunning) {
             menu.forEach(option -> System.out.println(option));
@@ -39,66 +42,30 @@ public class Main {
             int option = sc.nextInt();
             switch (option) {
                 case 0:
+                    ConnectComponent.closeConnection();
                     isRunning = false;
                     break;
                 case 1:
-                    // Should we always make a new instance of this or just once?
-                    try {
-                        ConnectComponent comp = new ConnectComponent();
-                        comp.createTables(tablesToWorkWith3);
-                        //comp.tryConnection(5, 6);
-                    } catch (Exception ex) {
-                        ExceptionHandler.handleException(ex);
-                    }
+                    comp.createTables(tablesToWorkWith3);
                     break;
                 case 2:
-                    // Should we always make a new instance of this or just once?
-                    try {
-                        ConnectComponent comp = new ConnectComponent();
-                        comp.deleteTables(tablesToWorkWith3);
-                        //comp.tryConnection(5, 6);
-                    } catch (Exception ex) {
-                        ExceptionHandler.handleException(ex);
-                    }
+                    comp.deleteTables(tablesToWorkWith3);
                     break;
                 case 3:
-                    // Should we always make a new instance of this or just once?
-                    try {
-                        ConnectComponent comp = new ConnectComponent();
-                        RandomGenerator randData = new RandomGenerator();
-                        randData.generateMeSome();
-                        comp.insertStudentsData(tablesToWorkWith, randData);
-                        comp.insertSubjectsData(tablesToWorkWith, randData);
-
-                    } catch (Exception ex) {
-                        ExceptionHandler.handleException(ex);
-                    }
+                    comp.insertStudentsData(tablesToWorkWith, randData);
+                    comp.insertSubjectsData(tablesToWorkWith, randData);
+                    comp.insertGradebookData(tablesToWorkWith, randData);
                     break;
                 case 4:
-                    // Should we always make a new instance of this or just once?
-                    try {
-                        ConnectComponent comp = new ConnectComponent();
-                        comp.truncateTable(tablesToWorkWith);
-                    } catch (Exception ex) {
-                        ExceptionHandler.handleException(ex);
-                    }
+                    comp.truncateTable(tablesToWorkWith);
                     break;
                 case 5:
-                    try {
-                        ConnectComponent comp = new ConnectComponent();
-                        System.out.println("Enter the name: ");
-                        String newSubject = sc.next();
-                        System.out.println("Enter the year in which the subject will be studied: ");
-                        int subjectYear = sc.nextInt();
-                        comp.insertNewSubject(tablesToWorkWith, newSubject, subjectYear);
-
-                    } catch (Exception ex) {
-                        ExceptionHandler.handleException(ex);
-                    }
+                    System.out.println("Enter the name: ");
+                    String newSubject = sc.next();
+                    System.out.println("Enter the year in which the subject will be studied: ");
+                    int subjectYear = sc.nextInt();
+                    comp.insertNewSubject(tablesToWorkWith, newSubject, subjectYear);
                     break;
-
-
-
             }
         }
 

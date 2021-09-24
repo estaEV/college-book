@@ -1,35 +1,23 @@
 package com.estafet.learning.sprint7;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
 
 import static java.lang.String.valueOf;
 
 public class ConnectComponent {
 
-    public void tryConnection(double lowPrice, double highPrice) throws Exception {
-
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
-
-             PreparedStatement preparedStatement = connection.
-                     prepareStatement("SELECT * FROM products "
-                             + "WHERE buyPrice between ? and ?");) {
-
-            preparedStatement.setDouble(1, lowPrice);
-            preparedStatement.setDouble(2, highPrice);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
-
-                while (resultSet.next()) {
-                    System.out.println(resultSet.next());
-                }
-            }
+    public static Connection openConnection() {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
+        } catch (Exception ex) {
+            ExceptionHandler.handleException(ex);
         }
+        return connection;
     }
 
 
@@ -40,10 +28,10 @@ public class ConnectComponent {
             // starts from 1
             StringBuilder params = new StringBuilder("");
             for (int j = 1; j < tablesToCreate[i].length; j++) {
-                if (j != tablesToCreate[i].length-1) {
-                    params.append("$col").append(String.valueOf(j)).append(", ");
+                if (j != tablesToCreate[i].length - 1) {
+                    params.append("$col").append(valueOf(j)).append(", ");
                 } else {
-                    params.append("$col").append(String.valueOf(j));
+                    params.append("$col").append(valueOf(j));
                 }
             }
 
@@ -57,12 +45,9 @@ public class ConnectComponent {
             strQuery = strQuery
                     .replace("$tableName", tablesToCreate[i][0]);
 
-
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
-
-                 PreparedStatement preparedStatement = connection.
-                         prepareStatement(strQuery);) {
+            try (
+                    PreparedStatement preparedStatement = openConnection().
+                            prepareStatement(strQuery);) {
 
                 System.out.println(preparedStatement);
                 preparedStatement.executeUpdate();
@@ -77,10 +62,9 @@ public class ConnectComponent {
                     + "$tableName;";
             String query = strQuery.replace("$tableName", tablesToDelete[i][0]);
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
-                 PreparedStatement preparedStatement = connection.
-                         prepareStatement(query);) {
+            try (
+                    PreparedStatement preparedStatement = openConnection().
+                            prepareStatement(query);) {
                 preparedStatement.executeUpdate();
             }
         }
@@ -102,11 +86,9 @@ public class ConnectComponent {
             String query = strQuery
                     .replace("$tableName", tablesToDelete[0]);
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
-
-                 PreparedStatement preparedStatement = connection.
-                         prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            try (
+                    PreparedStatement preparedStatement = openConnection().
+                            prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setString(1, listStud.get(i).getName());
                 preparedStatement.setInt(2, listStud.get(i).getStudentId());
@@ -126,47 +108,78 @@ public class ConnectComponent {
 
             String strQuery =
                     "INSERT INTO $tableName "
-                            + "(name, year) "
-                            + "VALUES (?, ?)";
+                            + "(name, studentId, year) "
+                            + "VALUES (?, ?, ?)";
 
             String query = strQuery
                     .replace("$tableName", tablesToDelete[1]);
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
-
-                 PreparedStatement preparedStatement = connection.
-                         prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            try (
+                    PreparedStatement preparedStatement = openConnection().
+                            prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setString(1, listSub.get(i).getSubjectName());
-                preparedStatement.setInt(2, listSub.get(i).getYearStudied());
+                preparedStatement.setString(2, String.valueOf(listSub.get(i).getSubjectId()));
+                preparedStatement.setInt(3, listSub.get(i).getYearStudied());
                 preparedStatement.executeUpdate();
             }
         }
     }
 
-    public void insertNewSubject(String[] tablesToDelete, String newSubject, int subjectYear) throws SQLException {
+    public void insertGradebookData(String[] tablesToDelete, RandomGenerator randData) throws SQLException {
 
-            String strQuery =
-                    "INSERT INTO $tableName "
-                            + "(name, year) "
-                            + "VALUES (?, ?)";
+        List<GradeBook> listGra = new ArrayList<>();
+        listGra = randData.getGraList();
 
-            String query = strQuery
-                    .replace("$tableName", tablesToDelete[1]);
+        for (int i = 0; i < listGra.size(); i++) {
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
+            listGra.get(i);
+            int numbersOfSubjectsStudied = listGra.get(i).getGrades().size();
+            Map<String, Integer> mapOfGrades = listGra.get(i).getGrades();
 
-                 PreparedStatement preparedStatement = connection.
-                         prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            for (Map.Entry<String, Integer> mapOfGrades2 : mapOfGrades.entrySet()) {
+                String strQuery =
+                        "INSERT INTO $tableName "
+                                + "(studentId, subjectId, grade) "
+                                + "VALUES (?, ?, ?)";
 
-                preparedStatement.setString(1, newSubject);
-                preparedStatement.setInt(2, subjectYear);
-                preparedStatement.executeUpdate();
+                String query = strQuery
+                        .replace("$tableName", tablesToDelete[2]);
+
+                try (
+                        PreparedStatement preparedStatement = openConnection().
+                                prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+                    preparedStatement.setInt(1, listGra.get(i).getStudentId());
+                    preparedStatement.setInt(2, Integer.parseInt(mapOfGrades2.getKey()));
+                    preparedStatement.setInt(3, Integer.valueOf(mapOfGrades2.getValue()));
+                    preparedStatement.executeUpdate();
+                }
             }
         }
+    }
 
+
+    public void insertNewSubject(String[] tablesToDelete, String newSubject, int subjectYear) throws SQLException {
+
+        String strQuery =
+                "INSERT INTO $tableName "
+                        + "(name, year) "
+                        + "VALUES (?, ?, ?)";
+
+        String query = strQuery
+                .replace("$tableName", tablesToDelete[1]);
+
+        try (
+                PreparedStatement preparedStatement = openConnection().
+                        prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, newSubject);
+            preparedStatement.setString(2, newSubject);
+            preparedStatement.setInt(2, subjectYear);
+            preparedStatement.executeUpdate();
+        }
+    }
 
 
     public void truncateTable(String[] tablesToDelete) throws SQLException {
@@ -179,18 +192,22 @@ public class ConnectComponent {
             String query = strQuery
                     .replace("$tableName", tablesToDelete[i]);
 
-            try (Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/college_book?user=admin2&password=admin2&serverTimezone=UTC");
+            try (
+                    PreparedStatement preparedStatement = openConnection().
+                            prepareStatement(query)) {
 
-                 PreparedStatement preparedStatement = connection.
-                         prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
-                preparedStatement.setString(1, tablesToDelete[i]);
+                //preparedStatement.setString(1, tablesToDelete[i]);
 
                 preparedStatement.executeUpdate();
             }
         }
     }
 
-
+    public static void closeConnection() {
+        try {
+            openConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

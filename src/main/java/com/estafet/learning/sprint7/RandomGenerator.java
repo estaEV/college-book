@@ -78,9 +78,9 @@ public class RandomGenerator {
             Map<String, Integer> grades = new LinkedHashMap<>();
             for (int j = 0; j < numOfSubjectsStudied; j++) {
                 graList.get(i).setNumOfSubjectsStudied(numOfSubjectsStudied);
-                grades.put(subList.get(dice.get()).getSubjectName(), grade.get());
-
+                grades.put(String.valueOf(subList.get(dice.get()).getSubjectId()), grade.get());
             }
+
             graList.get(i).setGrades(grades);
         }
          System.out.println("krai na rand()");
