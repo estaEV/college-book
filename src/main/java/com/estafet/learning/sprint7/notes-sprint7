@@ -8,11 +8,4 @@ Connection Methods:
 
 JDBC Follows the Facade Pattern
 
-
-
-
-
-
-
-qustions:
-should i make the random generation in the same class?
+PreparedStatement and ResultSet should be in different, nested try with resources blocks.

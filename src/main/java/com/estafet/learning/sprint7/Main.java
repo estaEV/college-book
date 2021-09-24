@@ -7,10 +7,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        RandomGenerator dataa = new RandomGenerator();
-        dataa.generateMeSome();
-        System.out.println("krai i na meina");
-
         Scanner sc = new Scanner(System.in);
         List<String> menu = new ArrayList<>();
         System.out.println("sprint7");
@@ -32,9 +28,6 @@ public class Main {
                 {"gradebooks", "studentId VARCHAR(50)", "subjectId VARCHAR(50)", "grade INT"}
         };
 
-        RandomGenerator randData = new RandomGenerator();
-        randData.generateMeSome();
-
         ConnectComponent comp = new ConnectComponent();
 
         while (isRunning) {
@@ -53,6 +46,8 @@ public class Main {
                     comp.deleteTables(tablesToWorkWith3);
                     break;
                 case 3:
+                    RandomGenerator randData = new RandomGenerator();
+                    randData.generateMeSome();
                     comp.insertStudentsData(tablesToWorkWith, randData);
                     comp.insertSubjectsData(tablesToWorkWith, randData);
                     comp.insertGradebookData(tablesToWorkWith, randData);
@@ -61,14 +56,18 @@ public class Main {
                     comp.truncateTable(tablesToWorkWith);
                     break;
                 case 5:
-                    System.out.println("Enter the name: ");
+                    System.out.print("Enter the name: ");
                     String newSubject = sc.next();
-                    System.out.println("Enter the year in which the subject will be studied: ");
+                    System.out.print("Enter the year in which the subject will be studied: ");
                     int subjectYear = sc.nextInt();
-                    comp.insertNewSubject(tablesToWorkWith, newSubject, subjectYear);
+                    System.out.print("Enter a unique id for the new subject: ");
+                    String subjectId = sc.next();
+                    comp.insertNewSubject(tablesToWorkWith, newSubject, subjectId, subjectYear);
                     break;
                 case 6:
-                    comp.mathAvgGrade();
+                    System.out.print("AVG math grade for students from a specific year: ");
+                    int studentsClassYear = sc.nextInt();
+                    comp.mathAvgGrade(studentsClassYear);
                     break;
             }
         }
