@@ -108,7 +108,7 @@ public class ConnectComponent {
 
             String strQuery =
                     "INSERT INTO $tableName "
-                            + "(name, studentId, year) "
+                            + "(name, subjectId, year) "
                             + "VALUES (?, ?, ?)";
 
             String query = strQuery
@@ -195,13 +195,18 @@ public class ConnectComponent {
             try (
                     PreparedStatement preparedStatement = openConnection().
                             prepareStatement(query)) {
-
-                //preparedStatement.setString(1, tablesToDelete[i]);
-
                 preparedStatement.executeUpdate();
             }
         }
     }
+
+
+    public void mathAvgGrade() {
+
+        // "SELECT AVG(grade) FROM college_book.gradebooks WHERE subjectId LIKE "55598";"
+
+    }
+
 
     public static void closeConnection() {
         try {

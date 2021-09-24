@@ -20,6 +20,7 @@ public class Main {
         menu.add("3. Fill the working tables with dummy data.");
         menu.add("4. Empty the working tables.");
         menu.add("5. Add a new subject to study.");
+        menu.add("6. Math AVG grade for all student.");
 
         boolean isRunning = true;
 
@@ -65,6 +66,9 @@ public class Main {
                     System.out.println("Enter the year in which the subject will be studied: ");
                     int subjectYear = sc.nextInt();
                     comp.insertNewSubject(tablesToWorkWith, newSubject, subjectYear);
+                    break;
+                case 6:
+                    comp.mathAvgGrade();
                     break;
             }
         }
