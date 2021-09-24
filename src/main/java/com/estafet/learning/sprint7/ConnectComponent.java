@@ -13,6 +13,8 @@ import static java.lang.String.valueOf;
 
 public class ConnectComponent {
 
+    public static final Connection connection = ConnectComponent.openConnection();
+
     public static Connection openConnection() {
         Connection connection = null;
         try {
@@ -21,6 +23,7 @@ public class ConnectComponent {
         } catch (Exception ex) {
             ExceptionHandler.handleException(ex);
         }
+        System.out.printf("connectio is : ", connection);
         return connection;
     }
 
@@ -48,7 +51,7 @@ public class ConnectComponent {
             strQuery = strQuery
                     .replace("$tableName", tablesToCreate[i][0]);
 
-            try (PreparedStatement preparedStatement = openConnection().
+            try (PreparedStatement preparedStatement = connection.
                     prepareStatement(strQuery);) {
 
                 System.out.println(preparedStatement);
@@ -64,7 +67,7 @@ public class ConnectComponent {
                     + "$tableName;";
             String query = strQuery.replace("$tableName", tablesToDelete[i][0]);
 
-            try (PreparedStatement preparedStatement = openConnection().
+            try (PreparedStatement preparedStatement = connection.
                     prepareStatement(query);) {
                 preparedStatement.executeUpdate();
             }
@@ -87,7 +90,7 @@ public class ConnectComponent {
             String query = strQuery
                     .replace("$tableName", tablesToDelete[0]);
 
-            try (PreparedStatement preparedStatement = openConnection().
+            try (PreparedStatement preparedStatement = connection.
                     prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setString(1, listStud.get(i).getName());
@@ -114,7 +117,7 @@ public class ConnectComponent {
             String query = strQuery
                     .replace("$tableName", tablesToDelete[1]);
 
-            try (PreparedStatement preparedStatement = openConnection().
+            try (PreparedStatement preparedStatement = connection.
                     prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setString(1, listSub.get(i).getSubjectName());
@@ -149,7 +152,7 @@ public class ConnectComponent {
                 String query = strQuery
                         .replace("$tableName", tablesToDelete[2]);
 
-                try (PreparedStatement preparedStatement = openConnection().
+                try (PreparedStatement preparedStatement = connection.
                         prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                     preparedStatement.setInt(1, listGra.get(i).getStudentId());
@@ -167,7 +170,6 @@ public class ConnectComponent {
 
 
     public void insertNewSubject(String[] tablesToDelete, String newSubject, String newSubjectId, int subjectYear) throws SQLException {
-
         String strQuery =
                 "INSERT INTO $tableName "
                         + "(name, subjectId, year) "
@@ -176,7 +178,7 @@ public class ConnectComponent {
         String query = strQuery
                 .replace("$tableName", tablesToDelete[1]);
 
-        try (PreparedStatement preparedStatement = openConnection().
+        try (PreparedStatement preparedStatement = connection.
                 prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, newSubject);
@@ -197,7 +199,7 @@ public class ConnectComponent {
             String query = strQuery
                     .replace("$tableName", tablesToDelete[i]);
 
-            try (PreparedStatement preparedStatement = openConnection().
+            try (PreparedStatement preparedStatement = connection.
                     prepareStatement(query)) {
                 preparedStatement.executeUpdate();
             }
@@ -210,7 +212,7 @@ public class ConnectComponent {
         double avgGrade = 0;
         String query =
                 "SELECT AVG(grade) FROM college_book.gradebooks WHERE subjectId LIKE \"55598\" AND studentId IN (SELECT studentId FROM college_book.students WHERE classYear = ?);\n";
-        try (PreparedStatement preparedStatement = openConnection().
+        try (PreparedStatement preparedStatement = connection.
                 prepareStatement(query);) {
             preparedStatement.setInt(1, studentsClassYear);
 
@@ -228,7 +230,7 @@ public class ConnectComponent {
 
     public static void closeConnection() {
         try {
-            openConnection().close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
