@@ -31,13 +31,13 @@ public class CollegeBookStepDefinition {
     @When("New tables are created")
     public void new_tables_are_created() {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //throw new io.cucumber.java.PendingException();
     }
 
     @Then("New tables should be present into the DB")
     public void new_tables_should_be_present_into_the_db() {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //throw new io.cucumber.java.PendingException();
     }
 
 

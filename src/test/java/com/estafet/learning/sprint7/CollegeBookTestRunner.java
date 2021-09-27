@@ -1,10 +1,10 @@
 package com.estafet.learning.sprint7;
 
-import cucumber.api.CucumberOptions;
-import net.serenitybdd.cucumber.CucumberWithSerenity;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.Cucumber;
 import org.junit.runner.RunWith;
 
-@RunWith(CucumberWithSerenity.class)
+@RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {"pretty", "html:target/cucumber-report.html"},
         features = "classpath:/features/com.estafet.learning.sprint7",
