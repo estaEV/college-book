@@ -1,32 +1,50 @@
 Feature: General operations using the DB
   Free text here about the feature.
 
-  Scenario: Creating new DB tables
-
-  Free text here related to the scenario
-
-    Given A connection is open
-    When New tables are created
-    Then New tables should be present into the DB
-
-#
-#  Scenario Outline: Healthy smotthies
-#
+#  Scenario: Creating new DB tables
 #  Free text here related to the scenario
 #
 #    Given A connection is open
-#    When New tables are created
-#    Examples: Healthie smothie
-#    This table describes some of the helathie smoothies
-#
-#      |Category| Somothie|Caloria|Flames|Range
-#      |Category| apple+bazz|120|2|Helathie
-#      |Category| peach+tzaziki|240|1|Helathie
-#
-#    Examples: Indulgent smothie
-#    This table describes some of the not so healthy smoothies
-#
-#      |Category| Somothie|Caloria|Flames|Range
-#      |Category| apple+bazz|120|2|Helathie
-#      |Category| peach+tzaziki|240|1|Helathie
-#    Then New tables should be present into the DB
+#    When Table "tableName" is created
+#      | students   |
+#      | subjects   |
+#      | gradebooks |
+
+
+  Scenario Outline: Creating new DB tables
+  Free text here related to the scenario
+
+    Given A connection is open
+    When Table <Table name> is created
+    Then <Table name> has to be present into the DB
+
+    Examples:
+      | Table name |
+      | students   |
+      | subjects   |
+      | gradebooks |
+
+
+  Scenario Outline: Generating custom student data
+
+    Given A connection is open
+    When Student with <name> <studentId> <classYear> is generated
+#    Then The new student records have to be present into the DB
+    Examples:
+      | name   | studentId | classYear |
+      | Pesho  | 33333     | 2016      |
+      | Ivan   | 33335     | 2016      |
+      | Dragan | 33336     | 2017      |
+
+
+  Scenario Outline: Generating custom subject data
+
+    Given A connection is open
+#    And the required tables are created
+    When Subject with <subjectName> <subjectId> <yearStudied> is generated
+#    Then The new subject records have to be present into the DB
+    Examples:
+      | subjectName | subjectId | yearStudied |
+      | CS          | 60000     | 2016        |
+      | Economics   | 60001     | 2016        |
+      | Pharmacy    | 600002    | 2017        |

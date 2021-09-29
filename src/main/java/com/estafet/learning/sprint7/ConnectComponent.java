@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.estafet.learning.sprint7.Globals.*;
 import static java.lang.String.valueOf;
 
 public class ConnectComponent {
-
-    public static final Connection connection = ConnectComponent.openConnection();
 
     public static Connection openConnection() {
         Connection connection = null;
@@ -23,7 +22,7 @@ public class ConnectComponent {
         } catch (Exception ex) {
             ExceptionHandler.handleException(ex);
         }
-        System.out.printf("connectio is : ", connection);
+        //System.out.printf("connection is : ", connection);
         return connection;
     }
 
@@ -235,4 +234,5 @@ public class ConnectComponent {
             e.printStackTrace();
         }
     }
+
 }

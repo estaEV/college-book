@@ -9,3 +9,11 @@ Connection Methods:
 JDBC Follows the Facade Pattern
 
 PreparedStatement and ResultSet should be in different, nested try with resources blocks.
+
+Regex
+^ The Start of the string
+$ The end of the string
+(.*) . - any character, zero or more times (including nothing)
+(.+) - matches at least one of anything
+(\\d+) - A sequence of digits
+(\\w+) - A sequence of letters or digits

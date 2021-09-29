@@ -3,6 +3,8 @@ package com.estafet.learning.sprint7;
 import java.io.IOException;
 import java.util.*;
 
+import static com.estafet.learning.sprint7.Globals.*;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -19,14 +21,6 @@ public class Main {
         menu.add("6. Math AVG grade for all student.");
 
         boolean isRunning = true;
-
-        String[] tablesToWorkWith = {"students", "subjects", "gradebooks"};
-        Map<String, ArrayList<String>> tablesToWorkWith2 = new LinkedHashMap<>();
-        String[][] tablesToWorkWith3 = {
-                {"students", "name VARCHAR(50)", "studentId VARCHAR(50)", "classYear INT"},
-                {"subjects", "name VARCHAR(50)", "subjectId VARCHAR(50)", "year INT"},
-                {"gradebooks", "studentId VARCHAR(50)", "subjectId VARCHAR(50)", "grade INT"}
-        };
 
         ConnectComponent comp = new ConnectComponent();
 

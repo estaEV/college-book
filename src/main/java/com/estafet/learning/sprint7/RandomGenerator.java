@@ -8,11 +8,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 public class RandomGenerator {
-    List<Student> stdList = null;
-    List<Subject> subList = null;
-    List<GradeBook> graList = null;
-    int subStartId = 55554;
-    int stdStartId = 19999;
+    private List<Student> stdList = null;
+    private List<Subject> subList = null;
+    private List<GradeBook> graList = null;
+    private int subStartId = 55554;
+    private int stdStartId = 19999;
 
     public List<Student> getStdList() {
         return stdList;
@@ -46,9 +46,9 @@ public class RandomGenerator {
         Supplier<Integer> year = () -> ThreadLocalRandom.current().nextInt(2018, 2022);
         Supplier<Integer> grade = () -> ThreadLocalRandom.current().nextInt(2, 6);
 
-        stdList= new ArrayList<>();
+        stdList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
-             Student fok = new Student();
+            Student fok = new Student();
             stdList.add(fok);
             stdList.get(i).setName(Globals.STUDENTNAMES[i]);
             stdStartId = ++stdStartId;
