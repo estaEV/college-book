@@ -15,6 +15,6 @@ public class Globals {
             {"subjects", "name VARCHAR(50)", "subjectId VARCHAR(50)", "year INT"},
             {"gradebooks", "studentId VARCHAR(50)", "subjectId VARCHAR(50)", "grade INT"}
     };
-    public static final Connection connection = ConnectComponent.openConnection();
+    public static Connection connection = ConnectComponent.openConnection();
 
 }

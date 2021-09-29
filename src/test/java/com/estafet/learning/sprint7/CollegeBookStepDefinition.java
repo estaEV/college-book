@@ -1,6 +1,6 @@
 package com.estafet.learning.sprint7;
 
-import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,7 +16,7 @@ import static com.estafet.learning.sprint7.Globals.*;
 
 public class CollegeBookStepDefinition {
 
-    public ConnectComponent comp = null;
+    ConnectComponent comp = null;
     String resultSetTable = null;
 
     @Given("A connection is open")
@@ -27,10 +27,11 @@ public class CollegeBookStepDefinition {
 
     @When("^Tables? (\\w+) (?:are|is) created$")
     //@When("Table {string} is created")
-    public void tablesAreCreated (String table) throws SQLException {
+    public void tablesAreCreated(String table) throws SQLException {
         tableNameHasToBePresentIntoTheDB(table);
-        if ( (!(resultSetTable.equals(table))) || resultSetTable == null) {
+        if ((resultSetTable == null || (!resultSetTable.equals(table)))) {
             comp.createTables(tablesToWorkWith3);
+            tableNameHasToBePresentIntoTheDB(table);
         }
         assertEquals(table, resultSetTable);
     }
@@ -52,13 +53,10 @@ public class CollegeBookStepDefinition {
 
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 while (resultSet.next()) {
-                    System.out.println("preparedStatement is: " + preparedStatement);
-                    //resultSetTable = resultSet.getString("Tables_in_college_book (" + table + ")");
                     resultSetTable = resultSet.getString(1);
                 }
             }
         }
-        //assertEquals(table, resultSetTable);
     }
 
     //@When("Student with {word} {int} {int} is generated")
@@ -76,37 +74,33 @@ public class CollegeBookStepDefinition {
         comp.insertStudentsData(tablesToWorkWith, randData);
     }
 
-// TO DO: Merge that with the preious method
-    @Then("The new student with {} {int} {int} has to be present into the DB")
-    public void theNewStudentHasToBePresentIntoTheDB(String studentName, int studentId, int classYear) throws SQLException {
+
+    @Then("The new {} with {} {int} {int} has to be present into the DB")
+    public void theNewStudentHasToBePresentIntoTheDB(String tableName, String objectName, int objectId, int objectYear) throws SQLException {
         String result = null;
         int result2 = 0;
         int result3 = 0;
         StringBuilder query = new StringBuilder();
 
         query
-                .append("SELECT * FROM students ")
-                .append(System.getProperty("line.separator"))
-                .append("WHERE studentId = ").append(studentId)
-                .append(";");
+                .append("SELECT * FROM " + tableName + "s " +
+                        System.getProperty("line.separator") +
+                        "WHERE " + tableName + "Id" + " = " + objectId + ";");
 
         try (PreparedStatement preparedStatement = connection.
                 prepareStatement(query.toString());) {
 
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 while (resultSet.next()) {
-                    System.out.println("preparedStatement is: " + preparedStatement);
-                    //resultSetTable = resultSet.getString("Tables_in_college_book (" + table + ")");
                     result = resultSet.getString(1);
                     result2 = resultSet.getInt(2);
                     result3 = resultSet.getInt(3);
                 }
             }
         }
-        System.out.println("result:" + result.trim());
-        assertEquals(studentName.trim(), result);
-        assertEquals(studentId, result2);
-        assertEquals(classYear, result3);
+        assertEquals(objectName.trim(), result);
+        assertEquals(objectId, result2);
+        assertEquals(objectYear, result3);
     }
 
     @When("^Subject with (\\w+) (\\d+) (\\d+) is generated$$")
@@ -122,39 +116,31 @@ public class CollegeBookStepDefinition {
         randData.setSubList(subList);
         comp.insertSubjectsData(tablesToWorkWith, randData);
 
-
     }
 
-    @Then("^The new subject with (\\w+) (\\d+) (\\d+) has to be present into the DB$")
-    public void SubjectHasToBePresentIntoTheDB(String subjectName, int subjectId, int yearStudied) throws SQLException {
-        String result = null;
-        int result2 = 0;
-        int result3 = 0;
-        StringBuilder query = new StringBuilder();
 
-        query
-                .append("SELECT * FROM subjects ")
-                .append(System.getProperty("line.separator"))
-                .append("WHERE subjectId = ").append(subjectId)
-                .append(";");
-
-        try (PreparedStatement preparedStatement = connection.
-                prepareStatement(query.toString());) {
-
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
-                while (resultSet.next()) {
-                    System.out.println("preparedStatement is: " + preparedStatement);
-                    //resultSetTable = resultSet.getString("Tables_in_college_book (" + table + ")");
-                    result = resultSet.getString(1);
-                    result2 = resultSet.getInt(2);
-                    result3 = resultSet.getInt(3);
-                }
-            }
-        }
-        System.out.println("result:" + result);
-        assertEquals(subjectName.trim(), result.trim());
-        assertEquals(subjectId, result2);
-        assertEquals(yearStudied, result3);
+    @When("Data from tables is removed")
+    public void dataFromTablesIsRemoved() throws SQLException {
+        comp.truncateTable(tablesToWorkWith);
     }
 
+    @And("Tables are dropped")
+    public void tablesAreDropped() throws SQLException {
+        comp.deleteTables(tablesToWorkWith3);
+    }
+
+    @And("Connection is closed")
+    public void connectionIsClosed() throws SQLException {
+        ConnectComponent.closeConnection();
+    }
+
+    @Then("App is in idle")
+    public void appIsInIdle() throws SQLException {
+        assertTrue(connection.isClosed());
+    }
+
+    @Given("All other tests are executed")
+    public void allOtherTestsAreExecuted() {
+        assertNotNull(resultSetTable);
+    }
 }

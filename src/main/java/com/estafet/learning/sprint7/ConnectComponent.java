@@ -53,7 +53,6 @@ public class ConnectComponent {
             try (PreparedStatement preparedStatement = connection.
                     prepareStatement(strQuery);) {
 
-                System.out.println(preparedStatement);
                 preparedStatement.executeUpdate();
             }
         }
@@ -227,12 +226,8 @@ public class ConnectComponent {
     }
 
 
-    public static void closeConnection() {
-        try {
+    public static void closeConnection() throws SQLException {
             connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

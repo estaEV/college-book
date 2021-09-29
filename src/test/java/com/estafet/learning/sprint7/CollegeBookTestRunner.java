@@ -2,7 +2,13 @@ package com.estafet.learning.sprint7;
 
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.Cucumber;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
+
+import java.sql.SQLException;
+
+import static com.estafet.learning.sprint7.Globals.tablesToWorkWith3;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -11,4 +17,6 @@ import org.junit.runner.RunWith;
         glue = "com.estafet.learning.sprint7")
 
 public class CollegeBookTestRunner {
+
+
 }

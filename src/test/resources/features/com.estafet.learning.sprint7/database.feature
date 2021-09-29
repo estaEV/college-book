@@ -50,3 +50,24 @@ Feature: General operations using the DB
       | CS          | 60000     | 2016        |
       | Economics   | 60001     | 2016        |
       | Pharmacy    | 600002    | 2017        |
+
+#  Scenario Outline: Generating custom gradebook data
+#
+#    Given Table gradebooks is created
+#    And subject with subjectId is present
+#    When Grades <subjectId> <grade> are inserted
+#    Then Subject with subjectId has to have grades
+#    Examples:
+#      | subjectId | grade |
+#      | CS        | 5     |
+#      | Economics | 5     |
+#      | Pharmacy  | 5     |
+
+
+
+  Scenario: Cleaning data and tables
+#    Given All other tests are executed
+    When Data from tables is removed
+    And Tables are dropped
+    And Connection is closed
+    Then App is in idle
