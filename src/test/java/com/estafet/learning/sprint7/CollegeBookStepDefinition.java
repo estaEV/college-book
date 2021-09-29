@@ -16,7 +16,7 @@ import static com.estafet.learning.sprint7.Globals.*;
 
 public class CollegeBookStepDefinition {
 
-    ConnectComponent comp = null;
+    public ConnectComponent comp = null;
     String resultSetTable = null;
 
     @Given("A connection is open")
@@ -29,7 +29,7 @@ public class CollegeBookStepDefinition {
     //@When("Table {string} is created")
     public void tablesAreCreated (String table) throws SQLException {
         tableNameHasToBePresentIntoTheDB(table);
-        if (!(table.equals(resultSetTable))) {
+        if ( (!(resultSetTable.equals(table))) || resultSetTable == null) {
             comp.createTables(tablesToWorkWith3);
         }
         assertEquals(table, resultSetTable);
@@ -58,7 +58,7 @@ public class CollegeBookStepDefinition {
                 }
             }
         }
-        assertEquals(table, resultSetTable);
+        //assertEquals(table, resultSetTable);
     }
 
     //@When("Student with {word} {int} {int} is generated")
