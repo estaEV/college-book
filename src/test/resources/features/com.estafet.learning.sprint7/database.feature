@@ -11,10 +11,12 @@ Feature: General operations using the DB
 #      | gradebooks |
 
 
+  Background:
+    When A connection is open
+
   Scenario Outline: Creating new DB tables
   Free text here related to the scenario
 
-    Given A connection is open
     When Table <Table name> is created
     Then <Table name> has to be present into the DB
 
@@ -27,9 +29,10 @@ Feature: General operations using the DB
 
   Scenario Outline: Generating custom student data
 
-    Given A connection is open
+#    Given students has to be present into the DB
+    Given Table students is created
     When Student with <name> <studentId> <classYear> is generated
-#    Then The new student records have to be present into the DB
+    Then The new student with  <name> <studentId> <classYear> has to be present into the DB
     Examples:
       | name   | studentId | classYear |
       | Pesho  | 33333     | 2016      |
@@ -39,10 +42,9 @@ Feature: General operations using the DB
 
   Scenario Outline: Generating custom subject data
 
-    Given A connection is open
-#    And the required tables are created
+    Given Table subjects is created
     When Subject with <subjectName> <subjectId> <yearStudied> is generated
-#    Then The new subject records have to be present into the DB
+    Then The new subject with <subjectName> <subjectId> <yearStudied> has to be present into the DB
     Examples:
       | subjectName | subjectId | yearStudied |
       | CS          | 60000     | 2016        |
