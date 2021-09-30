@@ -1,16 +1,6 @@
 Feature: General operations using the DB
   Free text here about the feature.
 
-#  Scenario: Creating new DB tables
-#  Free text here related to the scenario
-#
-#    Given A connection is open
-#    When Table "tableName" is created
-#      | students   |
-#      | subjects   |
-#      | gradebooks |
-
-
   Background:
     When A connection is open
 
@@ -49,7 +39,8 @@ Feature: General operations using the DB
       | subjectName | subjectId | yearStudied |
       | CS          | 60000     | 2016        |
       | Economics   | 60001     | 2016        |
-      | Pharmacy    | 600002    | 2017        |
+      | Pharmacy    | 60002    | 2017        |
+
 
 #  Scenario Outline: Generating custom gradebook data
 #
@@ -62,7 +53,6 @@ Feature: General operations using the DB
 #      | CS        | 5     |
 #      | Economics | 5     |
 #      | Pharmacy  | 5     |
-
 
 
   Scenario: Cleaning data and tables

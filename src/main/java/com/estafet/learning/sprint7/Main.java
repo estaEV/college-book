@@ -18,7 +18,7 @@ public class Main {
         menu.add("3. Fill the working tables with dummy data.");
         menu.add("4. Empty the working tables.");
         menu.add("5. Add a new subject to study.");
-        menu.add("6. Math AVG grade for all student.");
+        menu.add("6. Math AVG grade for a student in a specific year.");
 
         boolean isRunning = true;
 
