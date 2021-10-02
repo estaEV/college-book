@@ -28,6 +28,7 @@ public class Main {
             menu.forEach(option -> System.out.println(option));
             System.out.print("\nEnter the selected func(): ");
             int option = sc.nextInt();
+            sc.nextLine();
             switch (option) {
                 case 0:
                     ConnectComponent.closeConnection();
@@ -61,7 +62,7 @@ public class Main {
                 case 6:
                     System.out.print("AVG math grade for students from a specific year: ");
                     int studentsClassYear = sc.nextInt();
-                    comp.mathAvgGrade(studentsClassYear);
+                    double mathAvg = comp.mathAvgGrade(studentsClassYear);
                     break;
             }
         }

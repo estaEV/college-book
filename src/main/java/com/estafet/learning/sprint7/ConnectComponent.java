@@ -22,7 +22,6 @@ public class ConnectComponent {
         } catch (Exception ex) {
             ExceptionHandler.handleException(ex);
         }
-        //System.out.printf("connection is : ", connection);
         return connection;
     }
 
@@ -72,7 +71,7 @@ public class ConnectComponent {
         }
     }
 
-    public void insertStudentsData(String[] tablesToDelete, RandomGenerator randData) throws SQLException {
+    public void insertStudentsData(String[] tablesToDelete, RandomGenerator randData) {
 
         List<Student> listStud = new ArrayList<>();
         listStud = randData.getStdList();
@@ -95,11 +94,13 @@ public class ConnectComponent {
                 preparedStatement.setInt(2, listStud.get(i).getStudentId());
                 preparedStatement.setInt(3, listStud.get(i).getClassYear());
                 preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         }
     }
 
-    public void insertSubjectsData(String[] tablesToDelete, RandomGenerator randData) throws SQLException {
+    public void insertSubjectsData(String[] tablesToDelete, RandomGenerator randData) {
 
         List<Subject> listSub = new ArrayList<>();
         listSub = randData.getSubList();
@@ -122,11 +123,13 @@ public class ConnectComponent {
                 preparedStatement.setString(2, String.valueOf(listSub.get(i).getSubjectId()));
                 preparedStatement.setInt(3, listSub.get(i).getYearStudied());
                 preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         }
     }
 
-    public void insertGradebookData(String[] tablesToDelete, RandomGenerator randData) throws SQLException {
+    public void insertGradebookData(String[] tablesToDelete, RandomGenerator randData) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -157,6 +160,8 @@ public class ConnectComponent {
                     preparedStatement.setInt(2, Integer.parseInt(mapOfGrades2.getKey()));
                     preparedStatement.setInt(3, Integer.valueOf(mapOfGrades2.getValue()));
                     preparedStatement.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
             }
         }
@@ -205,7 +210,7 @@ public class ConnectComponent {
     }
 
 
-    public void mathAvgGrade(int studentsClassYear) throws SQLException {
+    public double mathAvgGrade(int studentsClassYear) throws SQLException {
         //studentsClassYear = 2018;
         double avgGrade = 0;
         String query =
@@ -216,18 +221,18 @@ public class ConnectComponent {
 
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 while (resultSet.next()) {
-                    System.out.println("resulseti is: " + resultSet);
-                    System.out.println("resulseti is: " + preparedStatement);
+                    System.out.println("Math AVG SQL query is: " + preparedStatement);
                     avgGrade = resultSet.getDouble("AVG(grade)");
                 }
             }
         }
         System.out.println("The AVG math grade for all students is: " + avgGrade);
+        return avgGrade;
     }
 
 
     public static void closeConnection() throws SQLException {
-            connection.close();
+        connection.close();
     }
 
 }

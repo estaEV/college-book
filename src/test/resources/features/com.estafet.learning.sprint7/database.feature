@@ -6,10 +6,8 @@ Feature: General operations using the DB
 
   Scenario Outline: Creating new DB tables
   Free text here related to the scenario
-
     When Table <Table name> is created
     Then <Table name> has to be present into the DB
-
     Examples:
       | Table name |
       | students   |
@@ -18,8 +16,6 @@ Feature: General operations using the DB
 
 
   Scenario Outline: Generating custom student data
-
-#    Given students has to be present into the DB
     Given Table students is created
     When Student with <name> <studentId> <classYear> is generated
     Then The new student with  <name> <studentId> <classYear> has to be present into the DB
@@ -31,7 +27,6 @@ Feature: General operations using the DB
 
 
   Scenario Outline: Generating custom subject data
-
     Given Table subjects is created
     When Subject with <subjectName> <subjectId> <yearStudied> is generated
     Then The new subject with <subjectName> <subjectId> <yearStudied> has to be present into the DB
@@ -39,24 +34,19 @@ Feature: General operations using the DB
       | subjectName | subjectId | yearStudied |
       | CS          | 60000     | 2016        |
       | Economics   | 60001     | 2016        |
-      | Pharmacy    | 60002    | 2017        |
+      | Pharmacy    | 60002     | 2017        |
 
 
-#  Scenario Outline: Generating custom gradebook data
-#
-#    Given Table gradebooks is created
-#    And subject with subjectId is present
-#    When Grades <subjectId> <grade> are inserted
-#    Then Subject with subjectId has to have grades
-#    Examples:
-#      | subjectId | grade |
-#      | CS        | 5     |
-#      | Economics | 5     |
-#      | Pharmacy  | 5     |
+  Scenario: Selecting math avg grade for a students started in a specific year
+    Given Table gradebooks is created
+    When Query for a specific year is executed
+      | 2018 |
+      | 2019 |
+      | 2020 |
 
 
   Scenario: Cleaning data and tables
-#    Given All other tests are executed
+    #Given All other tests are executed
     When Data from tables is removed
     And Tables are dropped
     And Connection is closed

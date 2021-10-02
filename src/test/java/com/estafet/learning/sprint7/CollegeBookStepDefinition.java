@@ -1,5 +1,6 @@
 package com.estafet.learning.sprint7;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -59,7 +60,7 @@ public class CollegeBookStepDefinition {
         }
     }
 
-    //@When("Student with {word} {int} {int} is generated")
+
     @When("^Student with (\\w+) (\\d+) (\\d+) is generated$")
     public void recordWithNameSubjectGradeIsGenerated(String name, int studentId, int classYear) throws SQLException {
         Student fok = new Student();
@@ -103,7 +104,7 @@ public class CollegeBookStepDefinition {
         assertEquals(objectYear, result3);
     }
 
-    @When("^Subject with (\\w+) (\\d+) (\\d+) is generated$$")
+    @When("^Subject with (\\w+) (\\d+) (\\d+) is generated$")
     public void subjectWithSubjectNameSubjectIdYearStudiedIsGenerated(String subjectName, int subjectId, int yearStudied) throws SQLException {
         Subject subObj = new Subject();
         RandomGenerator randData = new RandomGenerator();
@@ -115,7 +116,6 @@ public class CollegeBookStepDefinition {
         subList.add(subObj);
         randData.setSubList(subList);
         comp.insertSubjectsData(tablesToWorkWith, randData);
-
     }
 
 
@@ -143,4 +143,13 @@ public class CollegeBookStepDefinition {
     public void allOtherTestsAreExecuted() {
         assertNotNull(resultSetTable);
     }
+
+    @When("Query for a specific year is executed")
+    public void queryForASpecificYearIsExecuted(DataTable table) throws SQLException {
+        List<List<String>> rows = table.asLists(String.class);
+        for (List<String> row : rows) {
+            double mathAvg = comp.mathAvgGrade(Integer.parseInt(row.get(0)));
+        }
+    }
+
 }
