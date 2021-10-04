@@ -12,6 +12,8 @@ import static com.estafet.learning.sprint7.Globals.tablesToWorkWith3;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
+        //tags = "(@special)",
+        //tags = "(@general or @data-generation or @functions) and not (@general and @cleaning)",
         plugin = {"pretty", "html:target/cucumber-report.html"},
         features = "classpath:/features/com.estafet.learning.sprint7",
         glue = "com.estafet.learning.sprint7")

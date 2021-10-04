@@ -37,6 +37,7 @@ Feature: General operations using the DB
       | Pharmacy    | 60002     | 2017        |
 
 
+#  @special
   Scenario: Selecting math avg grade for a students started in a specific year
     Given Table gradebooks is created
     When Query for a specific year is executed
@@ -45,9 +46,9 @@ Feature: General operations using the DB
       | 2020 |
 
 
-  Scenario: Cleaning data and tables
-    #Given All other tests are executed
-    When Data from tables is removed
-    And Tables are dropped
-    And Connection is closed
-    Then App is in idle
+#  Scenario: Cleaning data and tables
+#    #Given All other tests are executed
+#    When Data from tables is removed
+#    And Tables are dropped
+#    And Connection is closed
+#    Then App is in idle

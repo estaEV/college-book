@@ -104,6 +104,7 @@ public class CollegeBookStepDefinition {
         assertEquals(objectYear, result3);
     }
 
+
     @When("^Subject with (\\w+) (\\d+) (\\d+) is generated$")
     public void subjectWithSubjectNameSubjectIdYearStudiedIsGenerated(String subjectName, int subjectId, int yearStudied) throws SQLException {
         Subject subObj = new Subject();
